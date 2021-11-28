@@ -88,7 +88,7 @@ stopper = EarlyStopping(monitor='loss', patience = 20)
 checkpoint_filepath = 'checkpoint/'
 cacher = ModelCheckpoint(filepath=checkpoint_filepath,
                         save_weights_only=True,
-                        monitor='loss',
+                        monitor='val_loss',
                         mode='min',
                         save_freq='epoch',
                         save_best_only=True)
