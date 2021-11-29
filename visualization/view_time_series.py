@@ -3,6 +3,8 @@ import seaborn as sns
 from datetime import datetime
 import matplotlib.pyplot as plt
 
+sns.set_style("whitegrid")
+
 def stock_get(stock, fromDate=None, toDate=None):
     """
     Reads stock data to dataframe.
@@ -29,11 +31,11 @@ def stock_get(stock, fromDate=None, toDate=None):
     df = df[(fromDate <= df["Date"]) & (df["Date"] < toDate)]
     return df
 
-def stock_view(filename, fromDate=None, toDate=None, axes=None):
+def stock_view(filename, wtitle=None, fromDate=None, toDate=None, axes=None):
     """
     Visualize stock data.
 
-    :param filename: stock name
+    :param filename: stock name or dataframe
     :param value: str
     :param fromDate: from date
     :param value: str
@@ -42,16 +44,22 @@ def stock_view(filename, fromDate=None, toDate=None, axes=None):
     :return fig: matplotlib axes containing figure
     :rtype: matplotlib.axes.Axes
     """
-    df = stock_get(filename, fromDate, toDate)
+    if type(filename) is str:
+        df = stock_get(filename, fromDate, toDate)
+    else:
+        df = filename
     fig = sns.lineplot(x="Date", y="Open", data=df, ax=axes)
-    fig.set(title = filename, ylabel="Open ($)")
+    if wtitle != None:
+        fig.set(title = wtitle, ylabel="Open ($)")
+    elif type(filename) is str:
+        fig.set(title = filename, ylabel="Open ($)")
     return fig
 
 if __name__ == "__main__":
     ind = 0
     for stk in ["AAPL", "AMZN", "FB", "GOOG", "MSFT"]:
         ax = plt.subplot2grid((2,3), (int(ind/3),ind%3))
-        stock_view(stk, "2013-01-01", "2018-01-01", ax)
-        stock_view(stk, "2018-01-01", "2019-01-01", ax)
+        stock_view(stk, fromDate="2013-01-01", toDate="2018-01-01", axes=ax)
+        stock_view(stk, fromDate="2018-01-01", toDate="2019-01-01", axes=ax)
         ind += 1
     plt.show()
