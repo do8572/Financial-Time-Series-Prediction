@@ -1,6 +1,3 @@
-# Author: Johann Faouzi <johann.faouzi@gmail.com>
-# License: BSD-3-Clause
-
 import sys
 sys.path.insert(0, 'E:\Documents\FRI\predmeti\letnik_01\zimni semester\Strojno učenje\seminarska naloga')
 
@@ -10,12 +7,48 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pyts.decomposition import SingularSpectrumAnalysis
 import matplotlib.pyplot as plt
+from plotnine import *
 
-aapl = vts.stock_get("AAPL", "2013-01-01", "2018-01-01")
+WINDOW_SIZE = 10
 
-def ssa_smoothing(df, cols, window_size):
-    pass
+def build_timeseries(df, window_size=WINDOW_SIZE):
+    df = df.iloc[:,1:7].values
+    X = []
+    for i in range(window_size, df.shape[0]):
+            X.append(df[i-window_size:i, :])
+    
+    return np.array(X)
 
+def ssa_smoothing(df, cols, window_size=WINDOW_SIZE):
+    X = build_timeseries(df)
+    print(X.shape)
+    ssa = SingularSpectrumAnalysis(window_size=window_size, groups=10)
+    print(X[:,:,1])
+    X_ssa = ssa.fit_transform(X[:,:,1])
+
+    return X_ssa
+
+if __name__ == "__main__":
+    aapl = vts.stock_get("AAPL", "2013-01-01", "2018-01-01")
+    X_ssa = ssa_smoothing(aapl, None, window_size=WINDOW_SIZE)
+    print(X_ssa[0,1])
+    print(X_ssa.shape)
+
+    aapl = aapl.iloc[WINDOW_SIZE:, :]
+
+    for i in range(X_ssa.shape[1]):
+        aapl["vawe" + str(i)] = X_ssa[:,i,0]
+
+    print(aapl["vawe1"])
+
+    g = (
+        ggplot(aapl, aes(x="Date", y="Open")) +
+        geom_line() +
+        geom_line(aes(y="vawe1"))
+    )
+
+    print(g)
+"""
 # Parameters
 n_samples, n_timestamps = 100, 48
 
@@ -61,3 +94,5 @@ plt.show()
 
 # The first subseries consists of the trend of the original time series.
 # The second and third subseries consist of noise.
+
+"""
