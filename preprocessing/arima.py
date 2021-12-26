@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     ind = 0
     for stk in ["AAPL", "AMZN", "FB", "GOOG", "MSFT"]:
-        for i in range(1,10):
+        for i in range(9,10):
             # Set dates for 10-fold cross validation
             start_date = "20"+ str(int(i/2)+10) +"-0"+ str(int(i%2)*5+1) +"-01"
             end_date = "20"+ str(int(i/2)+15) +"-0"+ str(int(i%2)*5+1) +"-01"

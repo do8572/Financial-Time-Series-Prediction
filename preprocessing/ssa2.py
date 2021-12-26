@@ -10,8 +10,8 @@ import numpy as np
 
 def ssa_residuals(stockname: str, suspected_seasonality: int, embedding_dimension: int):
     df = vts.stock_get(stockname, "2000-01-01", "2030-01-01")
-    ssa = mySSA(df)
     for i in range(1,8):
+        ssa = mySSA(df)
         dft = df.iloc[:,i]
     
 
