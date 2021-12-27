@@ -83,9 +83,9 @@ if __name__ == "__main__":
             stk_train = vts.stock_get(stk, start_date, end_date)
             stk_test = vts.stock_get(stk, start_date_test, end_date_test)
 
-            apple_train = stk_train.iloc[:,1:7].values
+            stk_train = stk_train.iloc[:,1:7].values
             num_instances, num_features = stk_train.shape
-            apple_test = stk_test.iloc[:, 1:7].values
+            stk_test = stk_test.iloc[:, 1:7].values
 
             feature_set = []
             labels = []
@@ -95,16 +95,16 @@ if __name__ == "__main__":
             #scaler = StandardScaler()
             scaler = MinMaxScaler(feature_range=(-1,1))
 
-            apple_train_scaled = scaler.fit_transform(apple_train)
-            print(apple_train_scaled)
-            apple_test_scaled = scaler.transform(apple_test)
+            stk_train_scaled = scaler.fit_transform(stk_train)
+            print(stk_train_scaled)
+            stk_test_scaled = scaler.transform(stk_test)
 
-            for i in range(WINDOW_SIZE, apple_train_scaled.shape[0]):
-                feature_set.append(apple_train_scaled[i-WINDOW_SIZE:i, :])
-                labels.append(apple_train_scaled[i,0])
-            for i in range(WINDOW_SIZE, apple_test_scaled.shape[0]):
-                test_feature_set.append(apple_test_scaled[i-WINDOW_SIZE:i, :])
-                test_labels.append(apple_test_scaled[i,0])
+            for i in range(WINDOW_SIZE, stk_train_scaled.shape[0]):
+                feature_set.append(stk_train_scaled[i-WINDOW_SIZE:i, :])
+                labels.append(stk_train_scaled[i,0])
+            for i in range(WINDOW_SIZE, stk_test_scaled.shape[0]):
+                test_feature_set.append(stk_test_scaled[i-WINDOW_SIZE:i, :])
+                test_labels.append(stk_test_scaled[i,0])
 
             feature_set, labels = np.array(feature_set), np.array(labels)
             feature_set = np.reshape(feature_set, (feature_set.shape[0], feature_set.shape[1], feature_set.shape[2]))
