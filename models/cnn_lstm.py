@@ -30,7 +30,7 @@ def cnn_lstm_build():
   model.add(TimeDistributed(Conv1D(filters=64, kernel_size=3, activation='relu',
                                       kernel_regularizer=L1L2(0.001, 0.013),
                                       kernel_initializer=conv_initializer)))
-  model.add(TimeDistributed(Dropout(0.2)))
+  #model.add(TimeDistributed(Dropout(0.01)))
   model.add(TimeDistributed(Flatten()))
   model.add(LSTM(units=100, return_sequences=True, kernel_regularizer=L1L2(0.000001, 0.00001),
                                                       kernel_initializer=lstm_initializer))
@@ -61,17 +61,14 @@ if __name__ == "__main__":
 
   RES_FILE = "./cnn_lstm_results.csv"
 
-  if os.path.isfile(RES_FILE):
-    res = pd.read_csv(RES_FILE)
-  else:
-    res = pd.DataFrame(columns=["ALGORITHM", "START", "END","TYPE", "COMPANY", "ERROR"])
+  res = pd.DataFrame(columns=["ALGORITHM", "START", "END","TYPE", "COMPANY", "ERROR"])
 
   ind = 0
   nottdf = pd.DataFrame(columns=["date", "val", "type", "stock"])
-  for stk in ["AAPL"]:
+  for stk in ["AAPL", "AMZN", "FB", "GOOG", "MSFT"]:
     PRED_FILE = "./predictions/cnn_lstm_prediction_"+ stk +".csv"
     predfile = pd.DataFrame(columns=["Date", "Real", "Pred", "Stock"])
-    for i in range(9,10):
+    for i in range(1,10):
       # Set dates for 10-fold cross validation
         start_date = "20"+ str(int(i/2)+10) +"-0"+ str(int(i%2)*5+1) +"-01"
         end_date = "20"+ str(int(i/2)+15) +"-0"+ str(int(i%2)*5+1) +"-01"
@@ -127,7 +124,7 @@ if __name__ == "__main__":
 
         model = cnn_lstm_build()
 
-        stopper = EarlyStopping(monitor='val_loss', patience = 20)
+        stopper = EarlyStopping(monitor='val_loss', patience = 30)
         checkpoint_filepath = 'checkpoint/cnn_lstm_' + stk + '_checkpoint/'
         cacher = ModelCheckpoint(filepath=checkpoint_filepath,
                                 save_weights_only=True,
@@ -162,16 +159,16 @@ if __name__ == "__main__":
                                     "Pred": r_y[i][0],
                                     "Stock": stk}, ignore_index=True)
 
-            #print(f"CNN-RMSE: {mse(r_test, r_y, squared=False)}")
-            res = res.append({"ALGORITHM": "CNN",
+        print(f"CNN-LSTM-RMSE: {mse(r_test, r_y, squared=False)}")
+        res = res.append({"ALGORITHM": "CNN-LSTM",
                             "START": start_date,
                             "END": end_date,
                             "TYPE": "RMSE",
                             "COMPANY": stk,
                             "ERROR": mse(r_test, r_y, squared=False)},
                             ignore_index=True)
-            #print(f"CNN-MAPE: {mape(r_test, r_y)}")
-            res = res.append({"ALGORITHM": "CNN",
+        print(f"CNN-LSTM-MAPE: {mape(r_test, r_y)}")
+        res = res.append({"ALGORITHM": "CNN-LSTM",
                             "START": start_date,
                             "END": end_date,
                             "TYPE": "MAPE",
@@ -181,18 +178,6 @@ if __name__ == "__main__":
 
         res.to_csv(RES_FILE, index=False)
         predfile.to_csv(PRED_FILE, index=False)
-
-        ### Visualize Results
-        ax = plt.subplot2grid((2,3), (int(ind/3),ind%3))
-        rdf = pd.DataFrame()
-        rdf["Open"] = predfile["Real"]
-        rdf["Date"] = predfile["Date"]
-        tdf = pd.DataFrame()
-        tdf["Open"] = predfile["Pred"]
-        tdf["Date"] = predfile["Date"]
-        #print(rdf)
-        vts.stock_view(rdf, wtitle=stk, axes=ax)
-        vts.stock_view(tdf, wtitle=stk, axes=ax)
         
         for prkey in predfile.index:
           nottdf = nottdf.append({
@@ -209,8 +194,20 @@ if __name__ == "__main__":
             "stock": predfile.at[prkey, "Stock"]
           },ignore_index=True)
 
-        print(nottdf)
-        ind += 1
+
+    ### Visualize Results
+    ax = plt.subplot2grid((2,3), (int(ind/3),ind%3))
+    rdf = pd.DataFrame()
+    rdf["Open"] = predfile["Real"]
+    rdf["Date"] = predfile["Date"]
+    tdf = pd.DataFrame()
+    tdf["Open"] = predfile["Pred"]
+    tdf["Date"] = predfile["Date"]
+    #print(rdf)
+    vts.stock_view(rdf, wtitle=stk, axes=ax)
+    vts.stock_view(tdf, wtitle=stk, axes=ax)
+    print(nottdf)
+    ind += 1
     
   print(res.groupby(["TYPE","COMPANY"]).mean())
   print(res.groupby(["TYPE","COMPANY"]).std())
