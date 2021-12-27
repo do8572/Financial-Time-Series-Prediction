@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '/content/Financial-Time-Series-Prediction')
+sys.path.insert(0, 'E:\Documents\FRI\predmeti\letnik_01\zimni semester\Strojno učenje\seminarska naloga')
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -15,7 +15,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.regularizers import L1L2
 from keras.initializers import GlorotUniform, HeUniform
 
-def cnn_build(window_size, n_units=100, n_layers=(4,1), lreg=(0.000001, 0.00000001)):
+def cnn_build(window_size, n_units=100, n_layers=(4,1), lreg=(0.0000001, 0.0000001)):
     lstm_initializer = GlorotUniform(seed=17)
     relu_initializer = HeUniform(seed=17)
 
@@ -49,14 +49,11 @@ if __name__ == "__main__":
     import visualization.view_time_series as vts
     import os
 
-    WINDOW_SIZE = 10
+    WINDOW_SIZE = 18
 
     RES_FILE = "./cnn_results.csv"
 
-    if os.path.isfile(RES_FILE):
-        res = pd.read_csv(RES_FILE)
-    else:
-        res = pd.DataFrame(columns=["ALGORITHM", "START", "END","TYPE", "COMPANY", "ERROR"])
+    res = pd.DataFrame(columns=["ALGORITHM", "START", "END","TYPE", "COMPANY", "ERROR"])
 
     ind = 0
     #for stk in ["AAPL"]:
@@ -120,7 +117,7 @@ if __name__ == "__main__":
                                     save_best_only=True)
 
             history = model.fit(feature_set, labels, epochs = 200, batch_size = 64, \
-                                validation_split=0.1,
+                                validation_split=0.2,
                                 verbose=1, callbacks=[stopper, cacher])
             #print(history.history)
             model.load_weights(checkpoint_filepath)

@@ -57,7 +57,7 @@ if __name__ == "__main__":
   import visualization.view_time_series as vts
   import os
 
-  WINDOW_SIZE = 20
+  WINDOW_SIZE = 15
 
   RES_FILE = "./cnn_lstm_results.csv"
 
@@ -68,10 +68,10 @@ if __name__ == "__main__":
 
   ind = 0
   nottdf = pd.DataFrame(columns=["date", "val", "type", "stock"])
-  for stk in ["AAPL", "AMZN", "FB", "GOOG", "MSFT"]:
+  for stk in ["AAPL"]:
     PRED_FILE = "./predictions/cnn_lstm_prediction_"+ stk +".csv"
     predfile = pd.DataFrame(columns=["Date", "Real", "Pred", "Stock"])
-    for i in range(1,10):
+    for i in range(9,10):
       # Set dates for 10-fold cross validation
         start_date = "20"+ str(int(i/2)+10) +"-0"+ str(int(i%2)*5+1) +"-01"
         end_date = "20"+ str(int(i/2)+15) +"-0"+ str(int(i%2)*5+1) +"-01"
