@@ -14,7 +14,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.regularizers import L1L2
 from keras.initializers import GlorotUniform, HeUniform
 
-def lstm_build(n_units=100, n_layers=(4,1), lreg=(0.000001, 0.000001)):
+def lstm_build(n_units=100, n_layers=(3,1), lreg=(0.00001, 0.000001)):
     """
     Train LSTM model on stock time series.
 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     import visualization.view_time_series as vts
     import os
 
-    WINDOW_SIZE = 60
+    WINDOW_SIZE = 30
 
     RES_FILE = "./lstm_results.csv"
 
@@ -82,6 +82,7 @@ if __name__ == "__main__":
 
             stk_train = vts.stock_get(stk, start_date, end_date)
             stk_test = vts.stock_get(stk, start_date_test, end_date_test)
+            tmp_test = stk_test.copy()
 
             stk_train = stk_train.iloc[:,1:7].values
             num_instances, num_features = stk_train.shape
@@ -143,9 +144,9 @@ if __name__ == "__main__":
             r_test = rev_scaler.inverse_transform(test_labels.reshape(-1, 1))
             r_y = rev_scaler.inverse_transform(y_hat.reshape(-1, 1))
 
-            stk_test = stk_test.reset_index()
+            tmp_test = tmp_test.reset_index()
             for i in range(len(r_test)):
-                predfile = predfile.append({"Date": stk_test.at[WINDOW_SIZE+i, "Date"],
+                predfile = predfile.append({"Date": tmp_test.at[WINDOW_SIZE+i, "Date"],
                                  "Real": r_test[i][0],
                                  "Pred": r_y[i][0]}, ignore_index=True)
 
