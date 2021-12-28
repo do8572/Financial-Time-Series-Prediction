@@ -61,10 +61,7 @@ if __name__ == "__main__":
 
     RES_FILE = "./lstm_results.csv"
 
-    if os.path.isfile(RES_FILE):
-        res = pd.read_csv(RES_FILE)
-    else:
-        res = pd.DataFrame(columns=["ALGORITHM", "START", "END","TYPE", "COMPANY", "ERROR"])
+    res = pd.DataFrame(columns=["ALGORITHM", "START", "END","TYPE", "COMPANY", "ERROR"])
 
     ind = 0
     for stk in ["AAPL", "AMZN", "FB", "GOOG", "MSFT"]:

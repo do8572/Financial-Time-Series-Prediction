@@ -68,13 +68,16 @@ def arima_forecast(df, aargs, window_size):
             model = ARIMA(np.array(df[col][:lag]), order=aargs)
             model_fit = model.fit()
             y = model_fit.forecast()
-            #print(y[0])
+            print(y[0])
             res.append(y[0])
         tdf[col] = pd.Series(res)
     #print(pd.Series(res))
     #print(len(res))
     #print(len(tdf["Date"]))
     return tdf
+
+def arima_residuals(df, aargs, window_size):
+    return arima_forecast(df, aargs, window_size)
 
 
 if __name__ == "__main__":
@@ -84,51 +87,73 @@ if __name__ == "__main__":
     WINDOW_SIZE = 60
     RES_FILE = "../arima_results.csv"
 
-    if os.path.isfile(RES_FILE):
-        res = pd.read_csv(RES_FILE)
-    else:
-        res = pd.DataFrame(columns=["ALGORITHM", "START", "END","TYPE", "COMPANY", "ERROR"])
+    res = pd.DataFrame(columns=["ALGORITHM", "START", "END","TYPE", "COMPANY", "ERROR"])
 
     ind = 0
     for stk in ["AAPL", "AMZN", "FB", "GOOG", "MSFT"]:
-        for i in range(9,10):
+        PRED_FILE = "./predictions/arima_prediction_"+ stk +".csv"
+        predfile = pd.DataFrame(columns=["Date", "Real", "Pred"])
+        for i in range(1,10):
             # Set dates for 10-fold cross validation
             start_date = "20"+ str(int(i/2)+10) +"-0"+ str(int(i%2)*5+1) +"-01"
             end_date = "20"+ str(int(i/2)+15) +"-0"+ str(int(i%2)*5+1) +"-01"
             start_date_test = end_date
             end_date_test = "20"+ str(int(i/2)+16) +"-0"+ str(int(i%2)*5+1) +"-01"
 
-            aapl_test = vts.stock_get(stk, start_date_test, end_date_test)
-            aapl_pred = arima_forecast(aapl_test, (1,1,1), WINDOW_SIZE)
-            print(f"RMSE of ARIMA: {mse(np.array(aapl_test['Open']), np.array(aapl_pred['Open']), squared=False)}")
+            print(f"Stock {stk}, train time frame: {start_date}-{end_date}")
+            print(f"Stock {stk}, test time frame: {start_date_test}-{end_date_test}")
+
+            stk_test = vts.stock_get(stk, start_date_test, end_date_test)
+            tmp_test = stk_test.copy()
+
+            stk_pred = arima_forecast(stk_test, (1,1,1), WINDOW_SIZE)
+
+            print(stk_pred["Open"])
+
+            tmp_test = tmp_test.reset_index()
+            for i in range(len(stk_pred)):
+                predfile = predfile.append({"Date": stk_pred.at[i, "Date"],
+                                 "Real": np.array(stk_test['Open'])[i],
+                                 "Pred": np.array(stk_pred['Open'])[i]}, ignore_index=True)
+
+            print(f"RMSE of ARIMA: {mse(np.array(stk_test['Open']), np.array(stk_pred['Open']), squared=False)}")
             res = res.append({"ALGORITHM": "ARIMA",
                         "TYPE": "RMSE",
                         "START": start_date,
                         "END": end_date,
                         "COMPANY": stk,
-                        "ERROR": mse(np.array(aapl_test['Open']), np.array(aapl_pred['Open']), squared=False)},
+                        "ERROR": mse(np.array(stk_test['Open']), np.array(stk_pred['Open']), squared=False)},
                         ignore_index=True)
-            print(f"MAPE of ARIMA: {mape(np.array(aapl_test['Open']), np.array(aapl_pred['Open']))}")
+            print(f"MAPE of ARIMA: {mape(np.array(stk_test['Open']), np.array(stk_pred['Open']))}")
             res = res.append({"ALGORITHM": "ARIMA",
                         "TYPE": "MAPE",
                         "START": start_date,
                         "END": end_date,
                         "COMPANY": stk,
-                        "ERROR": mape(np.array(aapl_test['Open']), np.array(aapl_pred['Open']))},
+                        "ERROR": mape(np.array(stk_test['Open']), np.array(stk_pred['Open']))},
                         ignore_index=True)
 
             res.to_csv(RES_FILE, index=False)
 
-            #ax = plt.subplot2grid((1,), (int(ind/3),ind%3))
-            #aapl_full = vts.stock_get("AAPL", "2013-01-01", "2019-01-01")
-            #vts.stock_view(aapl_full)
-            ax = plt.subplot2grid((2,3), (int(ind/3),ind%3))
-
-            vts.stock_view(aapl_test, wtitle=stk, axes=ax)
-            #vts.stock_view(aapl_test.iloc[WINDOW_SIZE:], wtitle=stk, axes=ax)
-            vts.stock_view(aapl_pred.tail(len(aapl_pred)-WINDOW_SIZE), wtitle=stk, axes=ax)
-            #print(aapl_test_pred.head())
-            #vts.stock_view(aapl_test_pred)
-            #stock_view(stk, "2013-01-01", "2018-01-01", ax)
-            ind += 1
+        ### Visualize Results
+        ax = plt.subplot2grid((2,3), (int(ind/3),ind%3))
+        rdf = pd.DataFrame()
+        rdf["Open"] = predfile["Real"]
+        rdf["Date"] = predfile["Date"]
+        tdf = pd.DataFrame()
+        tdf["Open"] = predfile["Pred"]
+        tdf["Date"] = predfile["Date"]
+        """
+        rdf["Open"] = r_y.flatten()
+        rdf["Date"] = np.array(stk_test["Date"][WINDOW_SIZE:])
+        tdf = pd.DataFrame()
+        tdf["Open"] = r_test.flatten()
+        tdf["Date"] = np.array(stk_test["Date"][WINDOW_SIZE:])
+        """
+        print(rdf)
+        vts.stock_view(rdf, wtitle=stk, axes=ax)
+        vts.stock_view(tdf, wtitle=stk, axes=ax)
+        #vts.stock_view(aapl)
+        #plt.legend()
+        ind += 1
     plt.show()
