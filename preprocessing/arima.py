@@ -47,7 +47,7 @@ def arima_smooth(df, amodels):
 
     return tdf, rdf
 
-def arima_forecast(df, aargs, window_size):
+def arima_forecast(df, aargs, window_size, cols=["Open"]):
     """
     Predict time series with ARIMA model.
 
@@ -61,7 +61,7 @@ def arima_forecast(df, aargs, window_size):
 
     tdf["Date"] = np.array(df["Date"])
 
-    for col in ["Open"]:
+    for col in cols:
         res = df[col][:window_size].copy().values.tolist()
         #print(res)
         for lag in range(window_size, len(df[col])):
@@ -77,7 +77,7 @@ def arima_forecast(df, aargs, window_size):
     return tdf
 
 def arima_residuals(df, aargs, window_size):
-    return arima_forecast(df, aargs, window_size)
+    return arima_forecast(df, aargs, window_size, cols=["Open", "High", "Low", "Close", "Adj Close", "Volume"])
 
 
 if __name__ == "__main__":
