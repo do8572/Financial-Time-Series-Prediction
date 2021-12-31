@@ -14,7 +14,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.regularizers import L1L2
 from keras.initializers import GlorotUniform, HeUniform
 
-def lstm_build(n_units=100, n_layers=(3,1), lreg=(0.00001, 0.000001)):
+def lstm_build(inp_shape, n_units=100, n_layers=(3,1), lreg=(0.00001, 0.000001)):
     """
     Train LSTM model on stock time series.
 
@@ -33,7 +33,7 @@ def lstm_build(n_units=100, n_layers=(3,1), lreg=(0.00001, 0.000001)):
 
     model = Sequential()
     model.add(LSTM(units=n_units, return_sequences=True, kernel_regularizer=err_reg,
-                                                    input_shape=(feature_set.shape[1], feature_set.shape[2]),
+                                                    input_shape=(inp_shape[0], inp_shape[1]),
                                                     kernel_initializer=lstm_initializer))
     model.add(Dropout(0.2))
     for i in range(n_layers[0]-2):
@@ -113,7 +113,7 @@ if __name__ == "__main__":
                                                             test_feature_set.shape[1], feature_set.shape[2]))
 
             ### Build model
-            model = lstm_build()
+            model = lstm_build((feature_set.shape[1], feature_set.shape[2]))
 
             ### Train Model
             stopper = EarlyStopping(monitor='val_loss', patience = 15)

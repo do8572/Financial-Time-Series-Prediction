@@ -17,7 +17,7 @@ from keras.initializers import GlorotUniform, HeUniform, HeNormal
 
 from plotnine import *
 
-def cnn_lstm_build():
+def cnn_lstm_build(n_length, n_features):
   lstm_initializer = GlorotUniform(seed=17)
   relu_initializer = HeUniform(seed=17)
   conv_initializer = HeNormal(seed=17)
@@ -122,7 +122,7 @@ if __name__ == "__main__":
         print(X_train.shape)
         print(X_test.shape)
 
-        model = cnn_lstm_build()
+        model = cnn_lstm_build(n_length, n_features)
 
         stopper = EarlyStopping(monitor='val_loss', patience = 30)
         checkpoint_filepath = 'checkpoint/cnn_lstm_' + stk + '_checkpoint/'

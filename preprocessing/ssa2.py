@@ -38,7 +38,7 @@ plt.show()
 
 ssa.ts.plot(title='Original Time Series'); # This is the original series for comparison
 streams5 = [i for i in range(8)]
-var = ssa.forecast_recurrent(steps_ahead=500, singular_values=streams5, plot=False)
+var = ssa.forecast_recurrent(steps_ahead=1, singular_values=streams5, plot=False)
 print(var)
 reconstructed5 = ssa.view_reconstruction(*[ssa.Xs[i] for i in streams5], names=streams5, return_df=True)
 plt.show()
