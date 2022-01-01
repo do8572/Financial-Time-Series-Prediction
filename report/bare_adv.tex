@@ -932,7 +932,7 @@ We trained our CNN model for 200 epochs with pre-emptive stopping.
 \par Our third and final model is the CNN-LSTM-ANN model which uses both CNN and LSTM layers. The Conv layers are used to capture hierarchical nonlinear data, while the LSTM layers are used to capture long-term dependencies in our data. The CNN-LSTM has been shown to outperform both LSTM and CNN~\cite{carbon}.
 \par Unlike in the previous model the Conv layers are used exclusively to extract spatial temporal data and not to extract inter-feature information.
 The CNN-LSTM structure is shown in figure~\ref{fig:cnn_lstm-def}.
-\begin{figure}[H]\centering
+\begin{figure}[!ht]\centering
 	\includegraphics[width=\linewidth]{images/CNN_LSTM.png}
 	\caption{\textbf{CNN-LSTM.} Extracted data from CNN is used in LSTM.}
 	\label{fig:cnn_lstm-def}
@@ -1050,7 +1050,7 @@ This process also stationarized all five of our time series.
 \end{table}
 \par From Table~\ref{fig:res2} and Figure~\ref{tab:res2} we see that the best model in ARIMA residual prediction is CNN, with CNN-LSTM being second,
 while LSTM consistently increases the residual error.
-We note that this is not because of incorrect hyperparameter tunning as the LSTM model displayed extremely erratic prediction patterns and failed to predict certain parts of the model entirely as can be observed from the results in Apendix A.
+We note that this is not because of incorrect hyperparameter tunning as the LSTM model displayed extremely erratic prediction patterns and failed to predict certain parts of the model entirely.
 \subsection{Model Explainability}
 \par In this section we used LIME to analyze our models and compare the importance they assign to features and to lags as well as how this changes when the models are trained on residuals.
 \begin{figure}[!ht]\centering
