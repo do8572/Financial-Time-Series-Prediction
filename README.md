@@ -5,17 +5,17 @@
 ---
 ```
     .
-    ├── articles                   # Articles used for this seminar project
-    ├── data                       # Datasets used
-    ├── images                     # Images Generated
-    ├── instructions               # Instruction for seminar project 
-    ├── prepreparation             # Preparation for seminar project
-    ├── preprocessing              # Vawelet Transform, SSA, ARIMA
-    ├── models                     # Prediction Models Used
-    ├── report                     # Project report (latex and bibtex files)
-    ├── visualization              # Code for visualization of data and results
-    ├── Financial_Time_Series_Prediction.pdf              # Pdf of final report
-    ├── report.ipynb              # Jupyter notebook used for report
+    ├── articles                                # Articles used for this seminar project
+    ├── data                                    # Datasets used
+    ├── images                                  # Images Generated
+    ├── instructions                            # Instruction for seminar project 
+    ├── prepreparation                          # Preparation for seminar project
+    ├── preprocessing                           # Vawelet Transform, SSA, ARIMA
+    ├── models                                  # Prediction Models Used
+    ├── report                                  # Project report (latex and bibtex files)
+    ├── visualization                           # Code for visualization of data and results
+    ├── Financial_Time_Series_Prediction.pdf    # Pdf of final report
+    ├── report.ipynb                            # Jupyter notebook used for report
     └── README.md
 ```
 
