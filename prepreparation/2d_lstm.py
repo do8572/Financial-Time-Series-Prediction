@@ -88,7 +88,7 @@ stopper = EarlyStopping(monitor='loss', patience = 20)
 checkpoint_filepath = 'checkpoint/'
 cacher = ModelCheckpoint(filepath=checkpoint_filepath,
                         save_weights_only=True,
-                        monitor='loss',
+                        monitor='val_loss',
                         mode='min',
                         save_freq='epoch',
                         save_best_only=True)
@@ -96,7 +96,7 @@ cacher = ModelCheckpoint(filepath=checkpoint_filepath,
 ### TODO: add k-fold cross-validation
 
 history = model.fit(feature_set, labels, epochs = 500, batch_size = 64, \
-                       #validation_split=0.2,
+                       validation_split=0.2,
                        verbose=1, callbacks=[stopper, cacher])
 #print(history.history)
 model.load_weights(checkpoint_filepath)
