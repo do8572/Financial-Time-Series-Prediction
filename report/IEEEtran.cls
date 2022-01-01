@@ -190,7 +190,7 @@
 
 
 
-\ProvidesClass{IEEEtran}[2012/12/27 V1.8 by Michael Shell]
+\ProvidesClass{IEEEtran}[2012/12/27 V1.8 by David Ocepek]
 \typeout{-- See the "IEEEtran_HOWTO" manual for usage information.}
 \typeout{-- http://www.michaelshell.org/tex/ieeetran/}
 \NeedsTeXFormat{LaTeX2e}

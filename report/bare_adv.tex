@@ -167,7 +167,7 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+  \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
   % \graphicspath{{../pdf/}{../jpeg/}}
   % and their extensions so you won't have to specify these with
@@ -210,7 +210,7 @@
 
 % *** MATH PACKAGES ***
 %
-%\usepackage[cmex10]{amsmath}
+\usepackage[cmex10]{amsmath}
 % A popular package from the American Mathematical Society that provides
 % many useful and powerful commands for dealing with mathematics. If using
 % it, be sure to load this package with the cmex10 option to ensure that
@@ -478,7 +478,7 @@ pdfpagemode={UseOutlines},plainpages=false,pdfpagelabels=true,
 colorlinks=true,linkcolor={black},citecolor={black},urlcolor={black},
 pdftitle={Bare Demo of IEEEtran.cls for Computer Society Journals},%<!CHANGE!
 pdfsubject={Typesetting},%<!CHANGE!
-pdfauthor={Michael D. Shell},%<!CHANGE!
+pdfauthor={David Ocepek},%<!CHANGE!
 pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
              template}}%<^!CHANGE!
 %\ifCLASSINFOpdf
@@ -534,18 +534,21 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 % There should be no need to do such things with IEEEtran.cls V1.6 and later.
 % (Unless specifically asked to do so by the journal or conference you plan
 % to submit to, of course. )
-
+\usepackage{float}
 
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
 
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\Lagr}{\mathcal{L}}
 
 \begin{document}
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
 % Do not put math or special symbols in the title.
-\title{Bare Advanced Demo of IEEEtran.cls\\ for Computer Society Journals}
+\title{Stock Price Prediction using LSTM, CNN, CNN-LSTM and ARIMA}
 %
 %
 % author names and IEEE memberships
@@ -569,17 +572,15 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 % journal papers have the author affiliations above the "Manuscript
 % received ..."  text while in non-compsoc journals this is reversed. Sigh.
 
-\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem M. Shell is with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332.\protect\\
+%\author{David~Ocepek% <-this % stops a space
+%\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem M. Shell is with the Department
+%of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
+%GA, 30332.\protect\\
 % note need leading \protect in front of \\ to get a newline within \thanks as
 % \\ is fragile and will error, could use \hfil\break instead.
-E-mail: see http://www.michaelshell.org/contact.html
-\IEEEcompsocthanksitem J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
-\thanks{Manuscript received April 19, 2005; revised December 27, 2012.}}
+% E-mail: see http://www.michaelshell.org/contact.html
+%\IEEEcompsocthanksitem J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
+%\thanks{Manuscript received April 19, 2005; revised December 27, 2012.}}
 
 % note the % following the last \IEEEmembership and also \thanks - 
 % these prevent an unwanted space from occurring between the last author name
@@ -600,9 +601,10 @@ E-mail: see http://www.michaelshell.org/contact.html
 % space somehow managed to creep in.
 
 
+\author{David~Ocepek}% <-this % stops a space
 
 % The paper headers
-\markboth{Journal of \LaTeX\ Class Files,~Vol.~11, No.~4, December~2012}%
+\markboth{Machine Learning Course Seminar project, December~2021}%
 {Shell \MakeLowercase{\textit{et al.}}: Bare Advanced Demo of IEEEtran.cls for Journals}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
@@ -642,12 +644,19 @@ E-mail: see http://www.michaelshell.org/contact.html
 % in the abstract or keywords.
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-The abstract goes here.
+Stock price forecasting is a long-term area of interest for the financial world with many new models being proposed on a monthly basis.
+In this paper we conducted a comparative analysis of LSTM, CNN, CNN-LSTM and ARIMA on five tech stock data sets obtained from YAHOO! Finance.
+We built upon our analysis by using ARIMA to remove seasonality and trend from our time series and analyzed the room for improvement that hybrid models, such as ARIMA-CNN can offer.
+We used our models to predict the next day opening price of each stock and quantified the stability of our results using cross-validation on a rolling basis. 
+Our results show that ARIMA is overall the best model for short-term time series forecasting compared to non-hybrid models, furthermore it
+appears that we can improve ARIMA models by using CNNs or CNN-LSTMs to reduce residual errors of the ARIMA model.
+
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-Computer Society, IEEEtran, journal, \LaTeX, paper, template.
+Stock price forecasting, ARIMA model, convolutional neural networks(CNN), Long Short-term memory networks(LSTM),
+convolutional long short-term memory(CNN-LSTM), hybrid models 
 \end{IEEEkeywords}}
 
 
@@ -716,26 +725,28 @@ Computer Society, IEEEtran, journal, \LaTeX, paper, template.
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-for IEEE Computer Society journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8 and later.
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-I wish you the best of success.
+\IEEEPARstart{A}{utomated} stock trading systems are commonly used in the financial sector to maximize profits by optimizing stock prediction models.
+For example, in 2016 more than 80\% of transactions in the Forex market were directed by robots~\cite{intro-forex}.
+Because of widespread automatization even small improvements in model prediction accuracy would yield large profits for financial institutions.
+This poses an interesting problem for data scientists because stock price forecasting is notoriously difficult due high levels of noise present in financial time series, a side-effect of market efficiency.
+\par In our paper we focused on next-day opening price prediction using multiple neural network models.
+As the baseline we used the statistical ARIMA model.
+In addition, we conducted a comparative analysis of ARIMA-neural network hybrid models.
+We explained and verified our results using the LIME algorithm.
+\par Our contributions are minor and mainly in the domain of result reproducibility and improvement of hybrid model understanding by performing additional analysis in some less-analyzed areas such as quantification of model uncertainty with cross-validation on a rolling basis and cross-model comparison with LIME.
 
-\hfill mds
- 
-\hfill December 27, 2012
-
-\subsection{Subsection Heading Here}
-Subsection text here.
+\subsection{Related Work}
+\par Stock price forecasting is an actively researched field and a lot of work has been done in recent years to optimize stock price prediction.
+Simpler models like ARIMA have lately been used to detrend and deseasonalize financial time series.
+\par In 2017, Selvin et al.~\cite{selvin2017stock} used AR,ARMA and ARIMA to improve RNN, LSTM and CNN model predictions of closing prices of multiple NSE listed companies.
+In 2019 Lei Ji et al.~\cite{carbon} used the ARIMA model to improve and analize carbon forecasting of CNN-LSTM.
+In 2019 Hoseinzade et al.~\cite{HOSEINZADE2019273} used 3D CNNs to combine features from multiple markets to improve next-day direction of movement prediction of the S\&P 500, NASDAQ, DJI, NYSE and RUSSELL indices.
+In 2020 Yan Wang et al.~\cite{wang2020forecasting} used an ARIMA XGBoost model to predict the opening price of 10 chinese stocks.
+In 2021 Qi Tang et al.~\cite{ssa_transform} used Wavelet Transform (WT) and Singular Spectrum Analysis (SSA) to denoise the Dow Jones Industrial Average Index. This resulted in improved neural network prediction models.
+In 2021 Xuan Ji et al.~\cite{word2vec} proposed using word2vec to build text feature vectors from social media and combining extracted features with stock market features as inputs to SSA smoothed LSTMs.
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
-
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
-
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
@@ -824,14 +835,263 @@ Subsubsection text here.
 % floats. This can be corrected via the \fnbelowfloat command of the
 % stfloats package.
 
+\section{Methodology}
+\subsection{Data sets}
+\par We used the stock data sets of Apple (AAPL), Amazon (AMZN), Facebook (FB), Google (GOOG) and Microsoft (MSFT) obtained from Yahoo! Finance~\cite{edgar}.
+Each dataset had the following daily information: Opening price, Closing price, Highest and Lowest stock price, Volume of stocks traded
+and Adjusted Closing price, which is the closing price adjusted for the companies actions such as paying of dividends.
 
+\subsection{Models}
+\subsubsection{ARIMA}
+\par The auto-regressive integrated moving average (ARIMA) ~\cite{hyndman} is a statistical model commonly used as a baseline for most time series models, as it is
+relatively fast and has high prediction accuracy for short-term forecasting.
+\par ARIMA is comprised of two parts: auto-regression (AR) and moving averages (MA).
+Prior to their usage the time series is differentiated to make it stationary, the (I) as in integrated, representing differentiation.
+\par ARIMA is formally defined in Equation~\ref{eqn:arima-def}
+\begin{equation}
+    \label{eqn:arima-def}
+    \begin{aligned}
+        y^{'}_t &= c + \phi_1 y^{'}_{t-1} + ... + \phi_p y^{'}_{t-p} + \\
+                &    \theta_1 \epsilon_{t-1} + ... + \theta_q \epsilon_{t-q} + \epsilon_t,
+    \end{aligned}
+\end{equation}
+where lagged values are represented as $y_t$ and lagged prediction errors are denoted as $\epsilon_t$, while $\phi_i$ and $\theta_j$ represent the learned model parameters.
+\par In our paper we used ARIMA(1,1,1).
 
+\subsubsection{LSTM}
+\par Long-short term memory (LSTM) neural network is a commonly used model for time series forecasting, mainly due to its ability to discover long term dependencies in sequential data. The structure of a LSTM cell is show in Figure~\ref{fig:lstm-cell}. 
+A LSTM cell is comprised of three gates: input, output and forget. The LSTM cell has an internal state $C_t$, which can be modified by the input gate and is forwarded to the next layer by the output gate; the forget gate learns how much of the previous state the cell should forget.
+For the activation function we used the sigmoid and tanh activation function.
+\par The learning process of a LSTM cell is comprised of three stages.
+In the first stage part of the information is eliminated by the forget gate.
+\begin{equation}
+    f_t = \sigma(b_f + W_f x_t + U_f h_{t-1}),
+\end{equation}
+where $x_t$ represents the input of the current cell, $h_{t-1}$ represents the output of the previous cell and $\sigma$ represents the sigmoid activation function, while $W$ and $U$ are model weights and $b$ is bias.
+The second stage updates the status of information in the cell.
+It is formally defined in Equation~\ref{eqn:lstm-def2}
+\begin{equation}
+	\begin{aligned}
+    i_t  &= \sigma(b_i + W_i x_t + U_i h_{t-1}), \\
+    \widetilde{C}_t  &= tanh(b_c + W_c x_t + U_c h_{t-1}), \\
+    C_t  &= f_t \times C_{t-1} + i_t \times \widetilde{C}_t.
+    \end{aligned}
+    \label{eqn:lstm-def2}
+\end{equation}
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/LSTM2.png}
+	\caption{\textbf{LSTM Cell.} $x_t$ is cell input, $C_t$ is the current cell state, $h_t$ cell output.}
+	\label{fig:lstm-cell}
+\end{figure}
+\par In the third stage we use the sigmoid function to check which part $O_t$ of the cell state our neuron outputs,
+then that part is pre-processed with the tanh activation function and outputted.
+The third stage is described in Equation~\ref{eqn:lstm-stage3}
+\begin{equation}
+	\begin{aligned}
+    O_t &= \sigma(b_o + W_o x_t + U_o h_{t-1}), \\
+    h_t &= O_t \times tanh(C_t).
+    \end{aligned}
+    \label{eqn:lstm-stage3}
+\end{equation}
+\par For our paper we used a many-to-one stacked stateless LSTM-ANN neural network. 
+We used three LSTM layers followed by one ANN layer; all layers were comprised of 100 neurons.
+For regularization a dropout rate of 0.2 was used and a weight decay of $l1=0.00001$, $l2=0.000001$.
+We did not use Batch normalization for our LSTM model.
+We normalized our data and used a lag window of size 60.
+We trained our LSTM model for 200 epochs with pre-emptive stopping. 
+\subsubsection{CNN}
+\par For our second model we used a stacked 2D CNN-ANN. 
+CNN models are commonly used to extract and combine hierarchical data from time series features~\cite{HOSEINZADE2019273}.
+\par A convolutional layer is comprised of a filter applied to the input matrix $[v_{i,j}]$.
+Each filter utilizes a shared set of weights to perform convolution, which are updated during training.
+The filter output is feed into an activation unit. 
+We used ReLU as our activation unit of choice for our CNN layers.
+\par As our CNN input we created an image where the first dimension represented our $j$ stock features and the second the $i$ time lags.
+In the first layer we combined our features with a 1d convolution layer with kernel size of six, in the second layer we combined our lags with a 1d convolution with kernel size three.
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/CNNpred.png}
+	\caption{\textbf{2D CNN.} Extracting and combining data from features and lags.}
+	\label{fig:cnn-pred}
+\end{figure}
+\par The formal transformation preformed by our convolutional layers in given by Equation~\ref{eqn:cnn-def}
+\begin{equation}
+	\begin{aligned}
+    v_{i,j} = \delta(\Sigma^{F-1}_{k=0} \Sigma^{F-1}_{m=0} w_{k,m} V_{i+k,j+m}),
+    \end{aligned}
+    \label{eqn:cnn-def}
+\end{equation}
+where $V$ is the input image, $F$ is the symmetric filter size, $w$ are the filter weights and $\delta$ is the activation function.
+\par We used a max polling layer to sub sample our data, in order to reduce the computational cost of our learning process as well as reduce overfitting.
+%We also used Batch normalization in order to speed up training.
+%Batch normalization is a set of additional network layers that reduces the internal covariance shift, this at a high level stabilizes the input %distribution from layer to layer. 
+\par Our CNN is structured as follows: the first two layers are 1d Conv layers, followed by a maxpool layer, followed by 3 ANN layers with 100, 200 and 200 neurons respectively, after each layer we used batch normalization.
+For regularization a dropout rate of 0.2 was used and a weight decay of $l1=0.0000001$, $l2=0.0000001$.
+We standardized our data and used a lag window of size 18.
+We trained our CNN model for 200 epochs with pre-emptive stopping.
+\subsubsection{CNN-LSTM}
+\par Our third and final model is the CNN-LSTM-ANN model which uses both CNN and LSTM layers. The Conv layers are used to capture hierarchical nonlinear data, while the LSTM layers are used to capture long-term dependencies in our data. The CNN-LSTM has been shown to outperform both LSTM and CNN~\cite{carbon}.
+\par Unlike in the previous model the Conv layers are used exclusively to extract spatial temporal data and not to extract inter-feature information.
+The CNN-LSTM structure is shown in figure~\ref{fig:cnn_lstm-def}.
+\begin{figure}[H]\centering
+	\includegraphics[width=\linewidth]{images/CNN_LSTM.png}
+	\caption{\textbf{CNN-LSTM.} Extracted data from CNN is used in LSTM.}
+	\label{fig:cnn_lstm-def}
+\end{figure}
+\par Our CNN-LSTM model was constructed as follows: our first two layers were 1d Conv layers  with kernel size three wrapped in the \textit{TimeDistributed} layer, following were two LSTM layers with 100 neurons each, followed by three ANN layers with 100 neurons each.
+For regularization a dropout rate of 0.2 was used and a weight decay of $l1=0.0000001$, $l2=0.0000001$.
+We standardized our data and used a lag window of size 18.
+We trained our CNN-LSTM model for 500 epochs with pre-emptive stopping.
+\subsection{Deseasonilizing \& detrending}
+\par Most training models work better when the time series is stationarized and the data is deseasonalized and detrended.
+We used the ARIMA model to remove the trend and seasonality of our time series.
+For each data set we iteratively predicted the next-day values with ARIMA and then subtracted the result from our data gaining residuals. In order to test the stationarity of our time series we used the Augmented Dickey-Fuller (ADF) statistical test, achiving a p-value of 0.01 on all residual dataset. We then used our models to predict the residuals. We compared $RMSE$ to the original ARIMA $RMSE$; the $RMSE$ of our models residuals is the same as our $RMSE$ on the original datasets, therefore we can compare them.
+
+\subsection{Model Explainability}
+\par In order to explain our results we used Locally Interpretable Model-Agnostic Explanations~\cite{LIME} (LIME). 
+LIME perturbs our sample data point $x$ in order to get perturbations $z^{'}$ which are then evaluated by an interpretable model $g$ which approximates our model $f(z)$, finally values $g(z^{'})$ are used to approximate our feature value $z$.
+A model is considered interpretable if we can visually inspect our results and verify our assumptions about the model.
+The current python implementation of LIME uses lines to explain models.
+This does require our model to be locally linear.
+The formal definition of LIME is given in Equation~\ref{eqn:lima-def}
+\begin{equation}
+	\begin{aligned}
+    &\xi(x) = \underset{g \in G}\argmin \Lagr(f,g,\pi_x) + \Omega(g), \\
+    &\Lagr(f,g,\pi_x) = \Sigma \pi_x(z)d(f(z),g(z^{'})),
+    \end{aligned}
+    \label{eqn:lima-def}
+\end{equation}
+where $\pi_x$ is probability of sampling point $z$ and $d$ is the cosine distance.
+\par We aggregated the explanation to get marginal explanations for both features and lags. 
+\subsection{Evaluation}
+\par We evaluated our models using cross-validation on a rolling basis. Figure~\ref{fig:cros-val} show the core idea of cross-validation on a rolling basis. We picked 10 six year intervals shifted by half a year. In each interval the first five years were used for training and validation while the last year was used for model testing.
+We used mean absolute percentage error (MAPE) for cross-model comparison and root mean squared error (RMSE) for an interpretable quantification of error.
+For quantification of uncertainty standard deviation of absolute percentage error (SDAPE) was used, furthermore standard deviation for cross-validation was also calculated.
+\begin{equation}
+    \begin{aligned}
+    &RMSE = \sqrt{\frac{1}{N}\Sigma^{N}_{i=1} (y_i - \hat{y}_i)^2}\\
+    &MAPE = \frac{1}{N}\Sigma^{N}_{i=1} |{\frac{y_i - \hat{y}_i}{y_i}}|\\
+    &SDAPE = \sqrt{\frac{1}{N}\Sigma^{N}_{i=1}(\frac{y_i - \hat{y}_i}{y_i} - MAPE)}\\
+    \end{aligned}
+\end{equation}
+
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/cros_validation.png}
+	\caption{\textbf{Cross-validation on a rolling basis.} We trained our model on consecutive five year time periods and tested it on the following year time period.
+	}
+	\label{fig:cros-val}
+\end{figure}
+
+\subsection{Implementation details}
+\par Our code was implemented in python. 
+We used Keras to build all our neural network models and statsmodels for ARIMA and our Dickey-Fuller test.
+For LIME we used the python LIME library and for result visualizations we used plotnine.
+
+\section{Results}
+\subsection{General results}
+\par In Figure~\ref{fig:res1} we compared models based on mean MAPE and SDAPE.
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/fig1.png}
+	\caption{\textbf{MAPE across datasets.} The height of the bars represents mean MAPE with the lines representing SDAPE.}
+	\label{fig:res1}
+\end{figure}
+\begin{table}[hbt]
+	\caption{MAPE and RMSE of models.}
+	\centering
+	\begin{tabular}{|l|r|r|r|r|}
+	    \hline
+        \toprule
+        ALGORITHM &  MAPE &  SDAPE &  RMSE &  SDMSE \\
+        \hline
+        \midrule
+            ARIMA & 0.009 &  0.003 &  8.02 &   4.07 \\
+              CNN & 0.024 &  0.009 & 17.26 &   8.64 \\
+         CNN-LSTM & 0.018 &  0.010 & 13.96 &   8.45 \\
+             LSTM & 0.020 &  0.010 & 16.12 &   8.96 \\
+        \hline
+        \bottomrule
+    \end{tabular}
+	\label{tab:res1}
+\end{table}
+We see that ARIMA scored on average the best accross all datasets. 
+CNN appears to have scored consistently the worst.
+From Figure~\ref{fig:res1}  and Table~\ref{tab:res1} we conclude that ARIMA is statistically the best scoring prediction model, while CNN is the worst.
+We note that our results for CNN-LSTM and LSTM are inconclusive since despite CNN-LSTM scoring on average better than LSTM it did so inconsistently with LSTM being better on AAPL and GOOG.
+In term of mean stability ARIMA is the most stable model, while the other models have comparable mean stability.
+
+\subsection{Hybrid model comparison}
+\par We removed the ARIMA predicted values from the datasets and trained our models on the residuals.
+While this process changes MAPE significantly, it leaves RMSE intact therefore in the following section we will analyze RMSE change in comparison with the original ARIMA. 
+This process also stationarized all five of our time series.
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/fig2.png}
+	\caption{\textbf{RMSE normalized.} The following histogram represents the reduction in RMSE relative to ARIMA.}
+	\label{fig:res2}
+\end{figure}
+\begin{table}[hbt]
+	\caption{RMSE of residuals.}
+	\centering
+    \begin{tabular}{|l|r|r|r|r|r|r|}
+    \toprule
+    \hline
+    {} &  AAPL &   AMZN &    FB &   GOOG & MSFT \\
+    \hline
+    \midrule
+    ARIMA     &  0.64 &  22.11 &  2.59 &  13.52 &  1.26 \\
+    %\hline
+    CNN       &  0.57 &  20.27 &  2.54 &  11.93 &  1.11 \\
+    %\hline
+    CNN-LSTM  &  0.57 &  20.41 &  2.63 &  12.51 &  1.13 \\
+    %\hline
+    LSTM      &  0.65 &  24.48 &  2.92 &  14.47 &  1.30 \\
+    \hline
+    \bottomrule
+    \end{tabular}
+	\label{tab:res2}
+\end{table}
+\par From Table~\ref{fig:res2} and Figure~\ref{tab:res2} we see that the best model in ARIMA residual prediction is CNN, with CNN-LSTM being second,
+while LSTM consistently increases the residual error.
+We note that this is not because of incorrect hyperparameter tunning as the LSTM model displayed extremely erratic prediction patterns and failed to predict certain parts of the model entirely as can be observed from the results in Apendix A.
+\subsection{Model Explainability}
+\par In this section we used LIME to analyze our models and compare the importance they assign to features and to lags as well as how this changes when the models are trained on residuals.
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/fig3.png}
+	\caption{\textbf{LIME of features.} Histogram shows marginal feature importance.}
+	\label{fig:expl1}
+\end{figure}
+As shown in Figure~\ref{fig:expl1} all three models assign almost no importance to Volume, this is inline with Wang et al~\cite{wang2003} who also found volume to be a poor predictor of stock growth.
+LSTM assign importance nearly uniformly across all other variables, while CNN-LSTM appears to favour Adj Close and Close, this being more inline with our intuition as we would assume that the closing price being closer to the next-day opening price should be a better predictor than other prices.
+While CNN does appear to assign high importance to Adj Close it assign little to Close and negative to Open, this is definitely unexpected as the Opening price should still be positively correlated with the next day price as such this might be the cause of CNNs poor performance.
+We note that CNN assigns higher feature importance to Low compared to High, indicating perhaps that the lowest daily stock price is a better predictor of stock value than the highest daily stock price, however this is questionable considering CNNs poor prediction score.
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/fig4.png}
+	\caption{\textbf{LIME of lags.} Smoothed marginal importance of each lag; lag $n$ represent lag at $t-(n+1)$.}
+	\label{fig:expl2}
+\end{figure}
+\par All three models appear to assign higher importance to earlier lags and lower importance to later lags, with CNN and CNN-LSTM approaching zero as lags grow above 12. 
+This is inline with our empirical results achieved during parameter tunning, where we found that both CNN and CNN-LSTM performed poorly with bigger lag windows, whereas LSTMs were shown to be much more resilient; considering LSTM scored similarly to CNN-LSTM we conclude that LSTM might have been assigning to much importance to later lags.
+Another interesting observation is the CNN-LSTM inflection around lag five. It appears that CNN-LSTM assumed that lags between three and eight are anti-correlated with the next day stock value.
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/fig5.png}
+	\caption{\textbf{Lime of residual features.} Histogram shows marginal feature importance.}
+	\label{fig:expl5}
+\end{figure}
+\par In Figure~\ref{fig:expl5} we compare LIME of residual features.
+Despite CNN being the best predictor and LSTM the worst, the overall distribution of importance appears to be similar for LSTM and CNN, with the clear exception that CNN adds far more importance to Adj Close, wheres LSTM appears to distribute feature importance almost uniformly.
+\par CNN-LSTM by distribution completely diverges from LSTM and CNN. It assigns near-zero importance to most features besides Close, Adj Close and Open. It is possible that CNN-LSTM found another important relationship in our data different from the first two, however further analysis is necessary to make a conclusion. 
+\begin{figure}[!ht]\centering
+	\includegraphics[width=\linewidth]{images/fig6.png}
+	\caption{\textbf{LIME of residual lags.} Smoothed marginal importance of each lag; lag $n$ represent lag at $t-(n+1)$.}
+	\label{fig:expl6}
+\end{figure}
+\par From Figure~\ref{fig:expl6} we conclude that CNN-LSTM was most likely unable to properly learn from the dataset as its lag importance is close to zero for all lags. 
+Figure~\ref{fig:expl6} also provides an explanation why LSTM underperformed in comparison to CNN; ARIMA removed a significant amount of long term dependencies, considering the uniformly high overall lag importance assigned by LSTM we conclude it improperly modeled the temporal features of our time series. 
+Another noteworthy observation is that both LSTM and CNN have very similair lag graphs for both residuals and the original dataset, while this is expected in the case of CNN it is far less expected in the instance of LSTM. %, which should have cell state weights trained during intra-batch training.
 \section{Conclusion}
-The conclusion goes here.
-
-
-
-
+\par We have on the problem of next-day stock prediction compared LSTM, CNN and CNN-LSTM and found that they consistently underperformed ARIMA both in mean prediction accuracy as well as in prediction stability, which is inline with other similar research~\cite{carbon}.
+\par On the problem of residual training CNN was the best predictor. 
+This finding is important as it is not inline with conventional wisdom to use either LSTM or CNN-LSTM to model time series residuals~\cite{carbon}. 
+It also implies that ARIMA is able to remove a significant portion of long term dependencies. 
+All models were analyzed by LIME, which we showed to be a very powerful tool for model analysis, as it was able to explain the poor residual predictions of LSTM as well as discover CNN-LSTMs failure to properly model residuals. 
 
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
@@ -848,16 +1108,6 @@ The conclusion goes here.
 %
 
 
-\appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
-
-% you can choose not to have a title for an appendix
-% if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
-
-
 % use section* for acknowledgement
 \ifCLASSOPTIONcompsoc
   % The Computer Society usually uses the plural form
@@ -868,7 +1118,7 @@ Appendix two text goes here.
 \fi
 
 
-The authors would like to thank...
+The authors would like to thank the professors and assistants of the Faculty of Computer Science for providing us with the knowledge necessary to write this paper.
 
 
 % Can use something like this to put references on a page
@@ -901,13 +1151,16 @@ The authors would like to thank...
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
+%\begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to {\LaTeX}}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to {\LaTeX}}, 3rd~ed.\hskip 1em plus
+%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
 
-\end{thebibliography}
+%\end{thebibliography}
+
+\bibliographystyle{IEEEtran}
+\bibliography{report}
 
 % biography section
 % 
@@ -920,22 +1173,11 @@ H.~Kopka and P.~W. Daly, \emph{A Guide to {\LaTeX}}, 3rd~ed.\hskip 1em plus
 %\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
-\begin{IEEEbiography}{Michael Shell}
-Biography text here.
-\end{IEEEbiography}
-
 % if you will not have a photo at all:
-\begin{IEEEbiographynophoto}{John Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
 
 % insert where needed to balance the two columns on the last page with
 % biographies
 %\newpage
-
-\begin{IEEEbiographynophoto}{Jane Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
 
 % You can push biographies down or up by placing
 % a \vfill before or after them. The appropriate
