@@ -14,6 +14,8 @@
     ├── models                     # Prediction Models Used
     ├── report                     # Project report (latex and bibtex files)
     ├── visualization              # Code for visualization of data and results
+    ├── Financial_Time_Series_Prediction.pdf              # Pdf of final report
+    ├── report.ipynb              # Jupyter notebook used for report
     └── README.md
 ```
 
