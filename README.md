@@ -63,6 +63,7 @@ Meta and Microsoft, commonly referred to as **Big Tech**.
 * MAE
 * RMSE
 * MAPE
+* SDAPE
 
 ### Results
 ---
