@@ -11,7 +11,7 @@
     ├── instructions                            # Instruction for seminar project
     ├── prepreparation                          # Preparation for seminar project
     ├── preprocessing                           # Vawelet Transform, SSA, ARIMA
-    ├── models                                  # Prediction Models Used
+    ├── models                                  # Prediction Models Used (_rez are model residuals)
     ├── report                                  # Project report (latex and bibtex files)
     ├── visualization                           # Code for visualization of data and results
     ├── Financial_Time_Series_Prediction.pdf    # Pdf of final report
