@@ -1,6 +1,10 @@
 # Financial Time Series Prediction
 ---
 
+# Setup
+
+Run Jupyter notebook or manualy install packages listed in environment.yml
+
 # Repository Structure
 ---
 ```
